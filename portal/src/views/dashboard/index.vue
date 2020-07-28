@@ -1,40 +1,53 @@
 <template>
   <div class="dashboard-container">
-    <el-dialog title="收货地址"
-               :visible.sync="dialogFormVisible">
+    <el-dialog
+      title="收货地址"
+      :visible.sync="dialogFormVisible"
+    >
       <el-form :model="selectBook">
         <el-form-item label="书名">
-          <el-input v-model="selectBook.name"
-                    autocomplete="off"></el-input>
+          <el-input
+            v-model="selectBook.name"
+            autocomplete="off"
+          />
         </el-form-item>
         <el-form-item label="作者">
-          <el-input v-model="selectBook.author"
-                    autocomplete="off"></el-input>
+          <el-input
+            v-model="selectBook.author"
+            autocomplete="off"
+          />
         </el-form-item>
       </el-form>
-      <div slot="footer"
-           class="dialog-footer">
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary"
-                   @click="saveBook">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="saveBook"
+        >确 定</el-button>
       </div>
     </el-dialog>
     <el-row :gutter="50">
-      <el-col v-for="(item,index) in list"
-              :key="index"
-              :span="6">
+      <el-col
+        v-for="(item,index) in list"
+        :key="index"
+        :span="6"
+      >
         <div class="book-container">
-          <div class="pic">
-          </div>
+          <div class="pic" />
           <div class="info">
-            <h3 class="name">{{item.name}}</h3>
-            <span class="author">{{item.author}}</span>
-            <span class="press">{{item.press}}</span>
-            <span class="contributor">{{item.contributor}}</span>
-            <el-button @click="editBook(item)"
-                       type="primary"
-                       size="small"
-                       round>+</el-button>
+            <h3 class="name">{{ item.name }}</h3>
+            <span class="author">{{ item.author }}</span>
+            <span class="press">{{ item.press }}</span>
+            <span class="contributor">{{ item.contributor }}</span>
+            <el-button
+              type="primary"
+              size="small"
+              round
+              @click="editBook(item)"
+            >+</el-button>
           </div>
         </div>
       </el-col>
@@ -97,12 +110,12 @@ export default {
       })
     },
     editBook(item) {
-      console.log(item);
-      this.dialogFormVisible = true;
-      this.selectBook = item;
+      console.log(item)
+      this.dialogFormVisible = true
+      this.selectBook = item
     },
     saveBook() {
-      const payload = this.selectBook;
+      const payload = this.selectBook
       contributeBook(payload).then(response => {
         console.log(response.data.items)
       })
