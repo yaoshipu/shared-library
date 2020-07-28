@@ -13,3 +13,13 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+# website
+portal/dist
+portal/node_modules/
+portal/dist/
+portal/npm-debug.log
+portal/test/unit/coverage
+portal/test/e2e/reports
+portal/selenium-debug.log
+portal/yarn-error.log
+
