@@ -23,3 +23,5 @@ portal/test/e2e/reports
 portal/selenium-debug.log
 portal/yarn-error.log
 
+cmd/library/library
+cmd/library/library.log

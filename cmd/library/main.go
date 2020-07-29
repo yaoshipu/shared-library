@@ -62,6 +62,7 @@ func run(c *cli.Context) error {
 	books := e.Group("/api/books")
 	{
 		books.GET("", listBooks)
+		books.GET("/:username", myBooks)
 		books.POST("", createBook)
 	}
 

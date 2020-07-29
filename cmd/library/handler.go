@@ -12,9 +12,35 @@ func ping(c echo.Context) error {
 	return c.String(http.StatusOK, "Pong")
 }
 
-func listBooks(c echo.Context) error {
+func myBooks(c echo.Context) error {
 
+	username := c.Param("username")
+	borrowed, err := bookColl.List(&ListOption{Name: username})
+	if err != nil {
+		return err
+	}
+	if borrowed == nil {
+		borrowed = []*Book{}
+	}
+
+	donated, err := bookColl.List(&ListOption{Donator: username})
+	if err != nil {
+		return err
+	}
+	if donated == nil {
+		donated = []*Book{}
+	}
+
+	mybooks := new(MyBooks)
+	mybooks.Borrowed = borrowed
+	mybooks.Donated = donated
+
+	return c.JSON(http.StatusOK, mybooks)
+}
+
+func listBooks(c echo.Context) error {
 	opt := ListOption{}
+
 	list, err := bookColl.List(&opt)
 
 	fmt.Println(list)

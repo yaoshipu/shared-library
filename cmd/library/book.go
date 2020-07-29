@@ -21,6 +21,12 @@ type Book struct {
 	Image      string        `bson:"image_url"          json:"image_url"`
 }
 
+// MyBooks struct
+type MyBooks struct {
+	Borrowed []*Book `bson:"borrowed"             json:"borrowed"`
+	Donated  []*Book `bson:"donated"              json:"donated"`
+}
+
 // BookColl struct
 type BookColl struct {
 	coll *mgo.Collection
