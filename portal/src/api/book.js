@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function donateBook(data) {
   return request({
-    url: '/donate/book',
+    url: '/books',
     method: 'post',
     data
   })

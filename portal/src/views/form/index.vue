@@ -17,7 +17,7 @@
         <el-input v-model="form.image" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="saveBook">Donate</el-button>
+        <el-button type="primary" @click="onSubmit">Donate</el-button>
         <el-button @click="onCancel">Cancel</el-button>
       </el-form-item>
     </el-form>
@@ -41,17 +41,15 @@ export default {
   },
   methods: {
     onSubmit() {
+      donateBook(this.form).then((response) => {
+        console.log(response);
+      });
       this.$message("submit!");
     },
     onCancel() {
       this.$message({
         message: "cancel!",
         type: "warning",
-      });
-    },
-    saveBook() {
-      donateBook(this.form).then((response) => {
-        console.log(response.data.items);
       });
     },
   },

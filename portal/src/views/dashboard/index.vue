@@ -7,7 +7,7 @@
     <el-row :gutter="20">
       <el-col v-for="(item,index) in filteredList" :key="index" :span="4">
         <el-card :body-style="{ padding: '0px' }">
-          <el-image style="width: 200px; height: 300px" :src="item.image"></el-image>
+          <el-image style="width: 200px; height: 300px" :src="item.image_url"></el-image>
           <div style="padding: 14px;">
             <div class="clearfix">
               <small class="name">{{ item.name }}</small>
@@ -49,78 +49,78 @@ export default {
     return {
       visible: false,
       list: [
-        {
-          id: 1,
-          name: "Site Reliability Engineering",
-          author: "Chris Jones",
-          publisher: "xxx",
-          donator: "Spark",
-          image:
-            "https://images-na.ssl-images-amazon.com/images/I/51XswOmuLqL._SX379_BO1,204,203,200_.jpg",
-        },
-        {
-          id: 2,
-          name: "Effective Java",
-          author: "Joshua Bloch",
-          publisher: "yyy",
-          donator: "Steven",
-          image:
-            "https://images-na.ssl-images-amazon.com/images/I/41JLgmt8MlL._SX402_BO1,204,203,200_.jpg",
-        },
-        {
-          id: 3,
-          name: "Think Python",
-          author: "Allen B Downey ",
-          publisher: "yyy",
-          donator: "Sun",
-          image:
-            "https://images-na.ssl-images-amazon.com/images/I/51-54ZrGSZL._SX379_BO1,204,203,200_.jpg",
-        },
-        {
-          id: 4,
-          name: "Design Patterns",
-          author: "Erich Gamma",
-          publisher: "yyy",
-          donator: "Coco",
-          image:
-            "https://images-na.ssl-images-amazon.com/images/I/41JLgmt8MlL._SX402_BO1,204,203,200_.jpg",
-        },
-        {
-          id: 5,
-          name: "Hacking",
-          author: "Jon Erickson",
-          publisher: "yyy",
-          donator: "Mei",
-          image:
-            "https://images-na.ssl-images-amazon.com/images/I/61VBaAS4IbL._SX383_BO1,204,203,200_.jpg",
-        },
-        {
-          id: 6,
-          name: "Introduction to Algorithms",
-          author: "Thomas H. Cormen",
-          publisher: "yyy",
-          donator: "Max",
-          image:
-            "https://images-na.ssl-images-amazon.com/images/I/41T0iBxY8FL._SX440_BO1,204,203,200_.jpg",
-        },
-        {
-          id: 7,
-          name: "Thinking in Systems",
-          author: "Donella H. Meadows",
-          publisher: "yyy",
-          donator: "Steven",
-          image:
-            "https://images-na.ssl-images-amazon.com/images/I/51frZKhRiIL._SX330_BO1,204,203,200_.jpg",
-        },
-        {
-          id: 8,
-          name: "Life 3.0",
-          author: "Max Tegmark",
-          publisher: "yyy",
-          donator: "Spark",
-          image:
-            "https://images-na.ssl-images-amazon.com/images/I/41mc05UgX8L._SX329_BO1,204,203,200_.jpg",
-        },
+        // {
+        //   id: 1,
+        //   name: "Site Reliability Engineering",
+        //   author: "Chris Jones",
+        //   publisher: "xxx",
+        //   donator: "Spark",
+        //   image:
+        //     "https://images-na.ssl-images-amazon.com/images/I/51XswOmuLqL._SX379_BO1,204,203,200_.jpg",
+        // },
+        // {
+        //   id: 2,
+        //   name: "Effective Java",
+        //   author: "Joshua Bloch",
+        //   publisher: "yyy",
+        //   donator: "Steven",
+        //   image:
+        //     "https://images-na.ssl-images-amazon.com/images/I/41JLgmt8MlL._SX402_BO1,204,203,200_.jpg",
+        // },
+        // {
+        //   id: 3,
+        //   name: "Think Python",
+        //   author: "Allen B Downey ",
+        //   publisher: "yyy",
+        //   donator: "Sun",
+        //   image:
+        //     "https://images-na.ssl-images-amazon.com/images/I/51-54ZrGSZL._SX379_BO1,204,203,200_.jpg",
+        // },
+        // {
+        //   id: 4,
+        //   name: "Design Patterns",
+        //   author: "Erich Gamma",
+        //   publisher: "yyy",
+        //   donator: "Coco",
+        //   image:
+        //     "https://images-na.ssl-images-amazon.com/images/I/41JLgmt8MlL._SX402_BO1,204,203,200_.jpg",
+        // },
+        // {
+        //   id: 5,
+        //   name: "Hacking",
+        //   author: "Jon Erickson",
+        //   publisher: "yyy",
+        //   donator: "Mei",
+        //   image:
+        //     "https://images-na.ssl-images-amazon.com/images/I/61VBaAS4IbL._SX383_BO1,204,203,200_.jpg",
+        // },
+        // {
+        //   id: 6,
+        //   name: "Introduction to Algorithms",
+        //   author: "Thomas H. Cormen",
+        //   publisher: "yyy",
+        //   donator: "Max",
+        //   image:
+        //     "https://images-na.ssl-images-amazon.com/images/I/41T0iBxY8FL._SX440_BO1,204,203,200_.jpg",
+        // },
+        // {
+        //   id: 7,
+        //   name: "Thinking in Systems",
+        //   author: "Donella H. Meadows",
+        //   publisher: "yyy",
+        //   donator: "Steven",
+        //   image:
+        //     "https://images-na.ssl-images-amazon.com/images/I/51frZKhRiIL._SX330_BO1,204,203,200_.jpg",
+        // },
+        // {
+        //   id: 8,
+        //   name: "Life 3.0",
+        //   author: "Max Tegmark",
+        //   publisher: "yyy",
+        //   donator: "Spark",
+        //   image:
+        //     "https://images-na.ssl-images-amazon.com/images/I/41mc05UgX8L._SX329_BO1,204,203,200_.jpg",
+        // },
       ],
       dialogFormVisible: false,
       search: "",
@@ -165,8 +165,8 @@ export default {
       //     })
       //   }
       getBooks().then((response) => {
-        console.log(response.data.items);
-        this.list = response.data.items;
+        console.log(response);
+        this.list = response;
       });
     },
     // editBook(item) {
