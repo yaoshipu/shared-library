@@ -41,7 +41,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { contributeBook } from '@/api/book'
+import { getBooks } from "@/api/book";
 
 export default {
   name: "Dashboard",
@@ -141,57 +141,57 @@ export default {
     },
   },
   created() {
-    this.list;
+    //this.list;
+    this.fetchData();
   },
   methods: {
-    // fetchData() {
-    //   let response = [{
-    //     id: 1,
-    //     name: 'Vue.js',
-    //     author: 'abc',
-    //     press: 'xxx',
-    //     isbn: 'xxx',
-    //     contributor: 'Spark'
-    //   }]
-    //   for (let index = 0; index < 6; index++) {
-    //     response.push({
-    //       id: 1,
-    //       name: 'Vue.js',
-    //       author: 'abc',
-    //       press: 'xxx',
-    //       isbn: 'xxx',
-    //       contributor: 'Steven'
-    //     })
-    //   }
-    //   this.list = response
-    // getList().then(response => {
-    //   this.list = response.data.items
-    //   console.log(response.data.items)
-    // })
-    //},
-    editBook(item) {
-      console.log(item);
-      this.dialogFormVisible = true;
-      this.selectBook = item;
-    },
-    saveBook() {
-      const payload = this.selectBook;
-      contributeBook(payload).then((response) => {
+    fetchData() {
+      //   let response = [{
+      //     id: 1,
+      //     name: 'Vue.js',
+      //     author: 'abc',
+      //     press: 'xxx',
+      //     isbn: 'xxx',
+      //     contributor: 'Spark'
+      //   }]
+      //   for (let index = 0; index < 6; index++) {
+      //     response.push({
+      //       id: 1,
+      //       name: 'Vue.js',
+      //       author: 'abc',
+      //       press: 'xxx',
+      //       isbn: 'xxx',
+      //       contributor: 'Steven'
+      //     })
+      //   }
+      getBooks().then((response) => {
         console.log(response.data.items);
+        this.list = response.data.items;
       });
     },
-    contribute() {
-      const payload = {
-        name: "test",
-        author: "abc",
-        press: "xxx",
-        isbn: "xxx",
-        contributor: "",
-      };
-      contributeBook(payload).then((response) => {
-        console.log(response.data.items);
-      });
-    },
+    // editBook(item) {
+    //   console.log(item);
+    //   this.dialogFormVisible = true;
+    //   this.selectBook = item;
+    // },
+    // saveBook() {
+    //   const payload = this.selectBook;
+    //   contributeBook(payload).then((response) => {
+    //     console.log(response.data.items);
+    //   });
+    // },
+    // contribute() {
+    //   const payload = {
+    //     name: "test",
+    //     author: "abc",
+    //     press: "xxx",
+    //     isbn: "xxx",
+    //     contributor: "",
+    //   };
+    //   contributeBook(payload).then((response) => {
+    //     console.log(response.data.items);
+    //   });
+    // },
   },
 };
 </script>

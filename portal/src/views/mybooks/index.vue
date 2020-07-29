@@ -27,12 +27,13 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { contributeBook } from '@/api/book'
+import { getBooks } from "@/api/book";
 
 export default {
   name: "MyBooks",
   data() {
     return {
+      // mybooks: null,
       mybooks: {
         donated: [
           {
@@ -121,32 +122,33 @@ export default {
   },
   created() {
     this.list;
+    //this.fetchData();
   },
   methods: {
     fetchData() {
-      let response = [{
-        id: 1,
-        name: 'Vue.js',
-        author: 'abc',
-        press: 'xxx',
-        isbn: 'xxx',
-        contributor: 'Spark'
-      }]
-      for (let index = 0; index < 6; index++) {
-        response.push({
-          id: 1,
-          name: 'Vue.js',
-          author: 'abc',
-          press: 'xxx',
-          isbn: 'xxx',
-          contributor: 'Steven'
-        })
-      }
-      this.list = response
-    getList().then(response => {
-      this.list = response.data.items
-      console.log(response.data.items)
-    })
+      // let response = [{
+      //   id: 1,
+      //   name: 'Vue.js',
+      //   author: 'abc',
+      //   press: 'xxx',
+      //   isbn: 'xxx',
+      //   contributor: 'Spark'
+      // }]
+      // for (let index = 0; index < 6; index++) {
+      //   response.push({
+      //     id: 1,
+      //     name: 'Vue.js',
+      //     author: 'abc',
+      //     press: 'xxx',
+      //     isbn: 'xxx',
+      //     contributor: 'Steven'
+      //   })
+      // }
+      // this.list = response
+      getBooks({ uid: 123 }).then((response) => {
+        this.mybooks = response.data;
+        console.log(response.data);
+      });
     },
   },
 };
