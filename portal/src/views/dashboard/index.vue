@@ -1,13 +1,18 @@
 <template>
   <div class="dashboard-container">
     <div class="search-wrapper">
-      <input type="text" v-model="search" placeholder="Search book name.." />
+      <input type="text"
+             v-model="search"
+             placeholder="Search book name.." />
       <label>Search book name:</label>
     </div>
     <el-row :gutter="20">
-      <el-col v-for="(item,index) in filteredList" :key="index" :span="4">
+      <el-col v-for="(item,index) in filteredList"
+              :key="index"
+              :span="4">
         <el-card :body-style="{ padding: '0px' }">
-          <el-image style="width: 200px; height: 300px" :src="item.image_url"></el-image>
+          <el-image style="width: 200px; height: 300px"
+                    :src="item.image_url"></el-image>
           <div style="padding: 14px;">
             <div class="clearfix">
               <small class="name">{{ item.name }}</small>
@@ -18,18 +23,23 @@
             <div class="bottom clearfix">
               <small class="contributor">donator {{ item.donator }}</small>
               <!-- <el-button type="text" class="button" icon="el-icon-plus"></el-button> -->
-              <el-popover placement="top" width="160" v-model="visible">
+              <!-- 绑定到设置好的 visible -->
+              <el-popover placement="top"
+                          trigger="click"
+                          width="160"
+                          v-model="item.visible">
                 <p>Do you want to borrow the book?</p>
                 <div style="text-align: right; margin: 0">
-                  <el-button size="mini" type="text" @click="visible = false">Cancel</el-button>
-                  <el-button type="primary" size="mini" @click="visible = false">Yes</el-button>
+                  <el-button size="mini"
+                             type="text"
+                             @click="cancelBorrow(index)">Cancel</el-button>
+                  <el-button type="primary"
+                             size="mini"
+                             @click="confirmBorrow(index)">Yes</el-button>
                 </div>
-                <el-button
-                  slot="reference"
-                  class="button"
-                  icon="el-icon-plus"
-                  @click="visible = true"
-                ></el-button>
+                <el-button slot="reference"
+                           class="button"
+                           icon="el-icon-plus"></el-button>
               </el-popover>
             </div>
           </div>
@@ -141,10 +151,16 @@ export default {
     },
   },
   created() {
-    //this.list;
     this.fetchData();
   },
   methods: {
+    cancelBorrow(index) {
+      this.$set(this.list[index], 'visible', false);
+    },
+    confirmBorrow(index) {
+      this.$set(this.list[index], 'visible', false);
+      //do something 
+    },
     fetchData() {
       //   let response = [{
       //     id: 1,
@@ -167,6 +183,10 @@ export default {
       getBooks().then((response) => {
         console.log(response);
         this.list = response;
+        //获取数据后添加个 visible flag
+        this.list.map(element => {
+          this.$set(element, 'visible', false)
+        });
       });
     },
     // editBook(item) {
