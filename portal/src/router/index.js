@@ -51,43 +51,35 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '图书管理系统', icon: 'dashboard' }
+      meta: { title: 'Shared Library', icon: 'el-icon-notebook-2' }
     }]
   },
 
   {
-    path: '/example',
+    path: '/mybooks',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: '图书列表', icon: 'el-icon-notebook-1' }
-    // children: [
-    //   {
-    //     path: 'table',
-    //     name: 'Table',
-    //     component: () => import('@/views/table/index'),
-    //     meta: { title: 'Table', icon: 'table' }
-    //   },
-    //   {
-    //     path: 'tree',
-    //     name: 'Tree',
-    //     component: () => import('@/views/tree/index'),
-    //     meta: { title: 'Tree', icon: 'tree' }
-    //   }
-    // ]
+    children: [
+      {
+        path: 'index',
+        name: 'Mybooks',
+        component: () => import('@/views/mybooks/index'),
+        meta: { title: 'My Books', icon: 'el-icon-reading' }
+      }
+    ]
   },
-  // {
-  //   path: '/form',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       name: 'Form',
-  //       component: () => import('@/views/form/index'),
-  //       meta: { title: '录入书籍', icon: 'el-icon-edit-outline' }
-  //     }
-  //   ]
-  // },
+
+  {
+    path: '/form',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Form',
+        component: () => import('@/views/form/index'),
+        meta: { title: 'Donate', icon: 'el-icon-circle-plus' }
+      }
+    ]
+  },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
