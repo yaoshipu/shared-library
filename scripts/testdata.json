@@ -1,0 +1,58 @@
+[
+    {
+        "name": "Site Reliability Engineering",
+        "author": "Chris Jones",
+        "publisher": "O'Reilly",
+        "donator": "spark",
+        "image_url": "https://images-na.ssl-images-amazon.com/images/I/51XswOmuLqL._SX379_BO1,204,203,200_.jpg"
+    },
+    {
+        "name": "Effective Java",
+        "author": "Joshua Bloch",
+        "publisher": "DK Publishing",
+        "donator": "steven",
+        "image_url": "https://images-na.ssl-images-amazon.com/images/I/41JLgmt8MlL._SX402_BO1,204,203,200_.jpg"
+    },
+    {
+        "name": "Think Python",
+        "author": "Allen B Downey ",
+        "publisher": "New Riders Publishing",
+        "donator": "sun",
+        "image_url": "https://images-na.ssl-images-amazon.com/images/I/51-54ZrGSZL._SX379_BO1,204,203,200_.jpg"
+    },
+    {
+        "name": "Design Patterns",
+        "author": "Erich Gamma",
+        "publisher": "Mike Publishing",
+        "donator": "coco",
+        "image_url": "https://images-na.ssl-images-amazon.com/images/I/51szD9HC9pL._SX395_BO1,204,203,200_.jpg"
+    },
+    {
+        "name": "Hacking",
+        "author": "Jon Erickson",
+        "publisher": "New York Publishing",
+        "donator": "mei",
+        "image_url": "https://images-na.ssl-images-amazon.com/images/I/61VBaAS4IbL._SX383_BO1,204,203,200_.jpg"
+    },
+    {
+        "name": "Introduction to Algorithms",
+        "author": "Thomas H. Cormen",
+        "publisher": "Tokyo Publishing",
+        "donator": "spark",
+        "image_url": "https://images-na.ssl-images-amazon.com/images/I/41T0iBxY8FL._SX440_BO1,204,203,200_.jpg"
+    },
+    {
+        "name": "Thinking in Systems",
+        "author": "Donella H. Meadows",
+        "publisher": "Westwood Publishing",
+        "donator": "steven",
+        "image_url": "https://images-na.ssl-images-amazon.com/images/I/51frZKhRiIL._SX330_BO1,204,203,200_.jpg"
+    },
+    {
+        "name": "Life 3.0",
+        "author": "Max Tegmark",
+        "publisher": "Rea tide Publishing",
+        "donator": "max",
+        "image_url": "https://images-na.ssl-images-amazon.com/images/I/41mc05UgX8L._SX329_BO1,204,203,200_.jpg"
+    }
+]

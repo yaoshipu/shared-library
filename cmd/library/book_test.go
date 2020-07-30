@@ -26,11 +26,11 @@ func TestBookCRUD(t *testing.T) {
 	err = bookColl.Create(nil)
 	assert.NotNil(err, "should not nil")
 
-	book1 := &Book{Name: "Site Reliability Engineering", Author: "Chris Jones", Donator: "Spark", Image: "https://images-na.ssl-images-amazon.com/images/I/51XswOmuLqL._SX379_BO1,204,203,200_.jpg"}
+	book1 := &Book{Name: "Site Reliability Engineering", Author: "Chris Jones", Donator: "spark", Borrower: "", Image: "https://images-na.ssl-images-amazon.com/images/I/51XswOmuLqL._SX379_BO1,204,203,200_.jpg"}
 	err = bookColl.Create(book1)
 	assert.Nil(err)
 
-	book2 := &Book{Name: "Effeictive Java", Author: "Joshua Bloch", Donator: "Steven", Image: "https://images-na.ssl-images-amazon.com/images/I/41JLgmt8MlL._SX402_BO1,204,203,200_.jpg"}
+	book2 := &Book{Name: "Effeictive Java", Author: "Joshua Bloch", Donator: "steven", Borrower: "spark", Image: "https://images-na.ssl-images-amazon.com/images/I/41JLgmt8MlL._SX402_BO1,204,203,200_.jpg"}
 	err = bookColl.Create(book2)
 	assert.Nil(err)
 

@@ -33,6 +33,13 @@ func main() {
 			EnvVars: []string{"PORT"},
 			Value:   "20987",
 		},
+		&cli.StringFlag{
+			Name:    "mongo",
+			Aliases: []string{"mgo"},
+			Usage:   "mongo host, e.g. 127.0.0.1:27017",
+			EnvVars: []string{"MGO"},
+			Value:   "40.112.174.85:27017",
+		},
 	}
 	if err := app.Run(os.Args); err != nil {
 		log.Fatal(err)
@@ -64,6 +71,8 @@ func run(c *cli.Context) error {
 		books.GET("", listBooks)
 		books.GET("/:username", myBooks)
 		books.POST("", createBook)
+		books.POST("/borrow", borrowBook)
+		books.POST("/return", returnBook)
 	}
 
 	user := e.Group("/api/user")
@@ -72,7 +81,7 @@ func run(c *cli.Context) error {
 		user.GET("/info", userInfo)
 	}
 
-	if err := initService(); err != nil {
+	if err := initService(c.String("mongo")); err != nil {
 		return err
 	}
 
@@ -80,9 +89,9 @@ func run(c *cli.Context) error {
 	return e.Start(fmt.Sprintf(":%s", c.String("port")))
 }
 
-func initService() error {
+func initService(mongoHost string) error {
 	var err error
-	mgoConfig = &MgoConfig{Host: "40.112.174.85:27017", DB: "sharedlibrary_test", Coll: "book", Mode: "strong"}
+	mgoConfig = &MgoConfig{Host: mongoHost, DB: "sharedlibrary", Coll: "book", Mode: "strong"}
 	bookColl, err = NewBookColl(mgoConfig)
 	if err != nil {
 		return err

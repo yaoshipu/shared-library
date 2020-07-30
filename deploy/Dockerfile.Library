@@ -1,0 +1,6 @@
+
+FROM debian
+RUN mkdir -p /library
+WORKDIR /library/
+COPY library .
+CMD ["/library/library"]

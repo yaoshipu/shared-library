@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -13,26 +12,21 @@ func ping(c echo.Context) error {
 }
 
 func myBooks(c echo.Context) error {
+	mybooks := new(MyBooks)
+	mybooks.Donated = []*Book{}
+	mybooks.Borrowed = []*Book{}
 
 	username := c.Param("username")
-	borrowed, err := bookColl.List(&ListOption{Name: username})
+	borrowed, err := bookColl.List(&ListOption{Borrower: username})
 	if err != nil {
-		return err
+		return c.JSON(http.StatusBadRequest, mybooks)
 	}
-	if borrowed == nil {
-		borrowed = []*Book{}
-	}
+	mybooks.Borrowed = borrowed
 
 	donated, err := bookColl.List(&ListOption{Donator: username})
 	if err != nil {
-		return err
+		return c.JSON(http.StatusBadRequest, mybooks)
 	}
-	if donated == nil {
-		donated = []*Book{}
-	}
-
-	mybooks := new(MyBooks)
-	mybooks.Borrowed = borrowed
 	mybooks.Donated = donated
 
 	return c.JSON(http.StatusOK, mybooks)
@@ -43,7 +37,6 @@ func listBooks(c echo.Context) error {
 
 	list, err := bookColl.List(&opt)
 
-	fmt.Println(list)
 	if err != nil {
 		return err
 	}
@@ -55,11 +48,33 @@ func createBook(c echo.Context) error {
 	if err := c.Bind(newBook); err != nil {
 		return err
 	}
-	fmt.Println(newBook.Name)
 	if err := bookColl.Create(newBook); err != nil {
 		return err
 	}
 	return c.JSON(http.StatusOK, newBook)
+}
+
+func borrowBook(c echo.Context) error {
+	opt := new(BookOpt)
+	if err := c.Bind(opt); err != nil {
+		return err
+	}
+	if err := bookColl.Borrow(opt.ID, opt.Borrower); err != nil {
+		return err
+	}
+	return c.JSON(http.StatusOK, opt)
+}
+
+func returnBook(c echo.Context) error {
+	opt := new(BookOpt)
+	if err := c.Bind(opt); err != nil {
+		return err
+	}
+
+	if err := bookColl.Return(opt.ID, opt.Borrower); err != nil {
+		return err
+	}
+	return c.JSON(http.StatusOK, opt)
 }
 
 // User ...

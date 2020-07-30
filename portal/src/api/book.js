@@ -16,10 +16,25 @@ export function getBooks(params) {
   })
 }
 
-export function getMyBooks(params) {
+export function getMyBooks(username) {
   return request({
-    url: '/mybooks',
+    url: `/books/${username}`,
     method: 'get',
-    params
+  })
+}
+
+export function returnBook(data) {
+  return request({
+    url: '/books/return',
+    method: 'post',
+    data
+  })
+}
+
+export function borrowBook(data) {
+  return request({
+    url: '/books/borrow',
+    method: 'post',
+    data
   })
 }

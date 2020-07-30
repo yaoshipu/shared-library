@@ -60,7 +60,7 @@ export const constantRoutes = [
     component: Layout,
     children: [
       {
-        path: 'index',
+        path: 'mybooks',
         name: 'Mybooks',
         component: () => import('@/views/mybooks/index'),
         meta: { title: 'My Books', icon: 'el-icon-reading' }
@@ -73,7 +73,7 @@ export const constantRoutes = [
     component: Layout,
     children: [
       {
-        path: 'index',
+        path: 'form',
         name: 'Form',
         component: () => import('@/views/form/index'),
         meta: { title: 'Donate', icon: 'el-icon-circle-plus' }

@@ -5,7 +5,7 @@
       <div class="wrapper">
         <div class="card" v-for="(item,index) in mybooks.donated" :key="index">
           <a v-bind:href="item.link" target="_blank">
-            <img v-bind:src="item.image" />
+            <img v-bind:src="item.image_url" />
             <small>by {{ item.author }}</small>
           </a>
         </div>
@@ -15,9 +15,17 @@
       <div class="header">My borrowed books</div>
       <div class="wrapper">
         <div class="card" v-for="(item,index) in mybooks.borrowed" :key="index">
-          <a v-bind:href="item.link" target="_blank">
-            <img v-bind:src="item.image" />
+          <a>
+            <img v-bind:src="item.image_url" />
             <small>by {{ item.author }}</small>
+            <el-popover placement="top" trigger="click" width="250" v-model="item.visible">
+              <span>Do you want to return the book?</span>
+              <div style="text-align: right; margin: 0">
+                <el-button size="mini" type="text" @click="cancelReturn(index)">Cancel</el-button>
+                <el-button type="primary" size="mini" @click="confirmReturn(index)">Yes</el-button>
+              </div>
+              <el-button slot="reference" class="button" icon="el-icon-minus"></el-button>
+            </el-popover>
           </a>
         </div>
       </div>
@@ -27,92 +35,19 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { getBooks } from "@/api/book";
+import { getMyBooks } from "@/api/book";
+import { returnBook } from "@/api/book";
 
 export default {
   name: "MyBooks",
   data() {
     return {
-      // mybooks: null,
-      mybooks: {
-        donated: [
-          {
-            id: 1,
-            name: "Site Reliability Engineering",
-            author: "Chris Jones",
-            publisher: "xxx",
-            donator: "Spark",
-            image:
-              "https://images-na.ssl-images-amazon.com/images/I/51XswOmuLqL._SX379_BO1,204,203,200_.jpg",
-          },
-          {
-            id: 2,
-            name: "Effective Java",
-            author: "Joshua Bloch",
-            publisher: "yyy",
-            donator: "Steven",
-            image:
-              "https://images-na.ssl-images-amazon.com/images/I/41JLgmt8MlL._SX402_BO1,204,203,200_.jpg",
-          },
-          {
-            id: 3,
-            name: "Think Python",
-            author: "Allen B Downey ",
-            publisher: "yyy",
-            donator: "Sun",
-            image:
-              "https://images-na.ssl-images-amazon.com/images/I/51-54ZrGSZL._SX379_BO1,204,203,200_.jpg",
-          },
-        ],
-        borrowed: [
-          {
-            id: 4,
-            name: "Design Patterns",
-            author: "Erich Gamma",
-            publisher: "yyy",
-            donator: "Coco",
-            image:
-              "https://images-na.ssl-images-amazon.com/images/I/41JLgmt8MlL._SX402_BO1,204,203,200_.jpg",
-          },
-          {
-            id: 5,
-            name: "Hacking",
-            author: "Jon Erickson",
-            publisher: "yyy",
-            donator: "Mei",
-            image:
-              "https://images-na.ssl-images-amazon.com/images/I/61VBaAS4IbL._SX383_BO1,204,203,200_.jpg",
-          },
-          {
-            id: 6,
-            name: "Introduction to Algorithms",
-            author: "Thomas H. Cormen",
-            publisher: "yyy",
-            donator: "Max",
-            image:
-              "https://images-na.ssl-images-amazon.com/images/I/41T0iBxY8FL._SX440_BO1,204,203,200_.jpg",
-          },
-          {
-            id: 7,
-            name: "Thinking in Systems",
-            author: "Donella H. Meadows",
-            publisher: "yyy",
-            donator: "Steven",
-            image:
-              "https://images-na.ssl-images-amazon.com/images/I/51frZKhRiIL._SX330_BO1,204,203,200_.jpg",
-          },
-          {
-            id: 8,
-            name: "Life 3.0",
-            author: "Max Tegmark",
-            publisher: "yyy",
-            donator: "Spark",
-            image:
-              "https://images-na.ssl-images-amazon.com/images/I/41mc05UgX8L._SX329_BO1,204,203,200_.jpg",
-          },
-        ],
-      },
+      visible: false, // return pophover visibility
 
+      mybooks: {
+        donated: [],
+        borrowed: [],
+      },
       dialogFormVisible: false,
       search: "",
     };
@@ -121,33 +56,26 @@ export default {
     ...mapGetters(["name"]),
   },
   created() {
-    this.list;
-    //this.fetchData();
+    this.fetchData();
   },
   methods: {
+    cancelReturn(index) {
+      this.$set(this.mybooks.borrowed[index], "visible", false);
+    },
+    confirmReturn(index) {
+      this.$set(this.mybooks.borrowed[index], "visible", false);
+      let returnOpt = {
+        id: this.mybooks.borrowed[index].id,
+        borrower: "spark", // hard code user name
+      };
+      returnBook(returnOpt).then((response) => {
+        this.$router.push("/#/Mybooks");
+      });
+    },
     fetchData() {
-      // let response = [{
-      //   id: 1,
-      //   name: 'Vue.js',
-      //   author: 'abc',
-      //   press: 'xxx',
-      //   isbn: 'xxx',
-      //   contributor: 'Spark'
-      // }]
-      // for (let index = 0; index < 6; index++) {
-      //   response.push({
-      //     id: 1,
-      //     name: 'Vue.js',
-      //     author: 'abc',
-      //     press: 'xxx',
-      //     isbn: 'xxx',
-      //     contributor: 'Steven'
-      //   })
-      // }
-      // this.list = response
-      getBooks({ uid: 123 }).then((response) => {
-        this.mybooks = response.data;
-        console.log(response.data);
+      getMyBooks("spark").then((response) => {
+        console.log(response);
+        this.mybooks = response;
       });
     },
   },

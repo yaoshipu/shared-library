@@ -17,8 +17,14 @@ type Book struct {
 	Name       string        `bson:"name"               json:"name"`
 	Donator    string        `bson:"donator"            json:"donator"`
 	UpdateTime int64         `bson:"update_time"        json:"update_time"`
-	Owner      string        `bson:"book_owner"         json:"book_owner"`
+	Borrower   string        `bson:"current_borrower"   json:"current_borrower"`
 	Image      string        `bson:"image_url"          json:"image_url"`
+}
+
+// BookOpt ...
+type BookOpt struct {
+	ID       bson.ObjectId `json:"id"`
+	Borrower string        `json:"borrower"`
 }
 
 // MyBooks struct
@@ -59,12 +65,53 @@ func (c *BookColl) Create(book *Book) error {
 	return coll.Insert(book)
 }
 
+// Borrow ...
+func (c *BookColl) Borrow(id bson.ObjectId, borrower string) error {
+	coll := FastCopyCollection(c.coll)
+	defer CloseCollection(coll)
+
+	var resp *Book
+	if err := coll.FindId(id).One(&resp); err != nil {
+		return err
+	}
+
+	if resp.Borrower != "" {
+		return errors.New("already borrowed")
+	}
+
+	change := bson.M{"$set": bson.M{
+		"update_time":      time.Now().Unix(),
+		"current_borrower": borrower,
+	}}
+	return coll.UpdateId(id, change)
+}
+
+// Return ...
+func (c *BookColl) Return(id bson.ObjectId, borrower string) error {
+	coll := FastCopyCollection(c.coll)
+	defer CloseCollection(coll)
+
+	var resp *Book
+	if err := coll.FindId(id).One(&resp); err != nil {
+		return err
+	}
+
+	if resp.Borrower != borrower {
+		return errors.New("cannot return")
+	}
+	change := bson.M{"$set": bson.M{
+		"update_time":      time.Now().Unix(),
+		"current_borrower": "",
+	}}
+	return coll.UpdateId(id, change)
+}
+
 // ListOption ...
 type ListOption struct {
-	Name    string
-	Author  string
-	Owner   string
-	Donator string
+	Name     string
+	Author   string
+	Borrower string
+	Donator  string
 }
 
 // List ...
@@ -86,12 +133,12 @@ func (c *BookColl) List(opt *ListOption) ([]*Book, error) {
 		query["author"] = opt.Author
 	}
 
-	if len(opt.Owner) != 0 {
-		query["owner"] = opt.Owner
-	}
-
 	if len(opt.Donator) != 0 {
 		query["donator"] = opt.Donator
+	}
+
+	if len(opt.Borrower) != 0 {
+		query["current_borrower"] = opt.Borrower
 	}
 
 	var resp []*Book

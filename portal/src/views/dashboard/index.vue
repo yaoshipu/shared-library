@@ -1,18 +1,13 @@
 <template>
   <div class="dashboard-container">
     <div class="search-wrapper">
-      <input type="text"
-             v-model="search"
-             placeholder="Search book name.." />
+      <input type="text" v-model="search" placeholder="Search book name.." />
       <label>Search book name:</label>
     </div>
     <el-row :gutter="20">
-      <el-col v-for="(item,index) in filteredList"
-              :key="index"
-              :span="4">
+      <el-col v-for="(item,index) in filteredList" :key="index" :span="4">
         <el-card :body-style="{ padding: '0px' }">
-          <el-image style="width: 200px; height: 300px"
-                    :src="item.image_url"></el-image>
+          <el-image style="width: 200px; height: 300px" :src="item.image_url"></el-image>
           <div style="padding: 14px;">
             <div class="clearfix">
               <small class="name">{{ item.name }}</small>
@@ -21,25 +16,26 @@
               <small class="author">by {{ item.author }}</small>
             </div>
             <div class="bottom clearfix">
-              <small class="contributor">donator {{ item.donator }}</small>
+              <small style="text-align: left;">donator {{ item.donator }}</small>
               <!-- <el-button type="text" class="button" icon="el-icon-plus"></el-button> -->
               <!-- 绑定到设置好的 visible -->
-              <el-popover placement="top"
-                          trigger="click"
-                          width="160"
-                          v-model="item.visible">
-                <p>Do you want to borrow the book?</p>
-                <div style="text-align: right; margin: 0">
-                  <el-button size="mini"
-                             type="text"
-                             @click="cancelBorrow(index)">Cancel</el-button>
-                  <el-button type="primary"
-                             size="mini"
-                             @click="confirmBorrow(index)">Yes</el-button>
+              <el-popover
+                placement="top"
+                trigger="click"
+                width="100"
+                v-model="item.visible"
+                v-if="item.current_borrower ===''"
+              >
+                <span>Borrow the book?</span>
+                <div style="text-align: right; margin-top: 10px">
+                  <el-button size="mini" type="text" @click="cancelBorrow(index)">Cancel</el-button>
+                  <el-button type="primary" size="mini" @click="confirmBorrow(index)">Yes</el-button>
                 </div>
-                <el-button slot="reference"
-                           class="button"
-                           icon="el-icon-plus"></el-button>
+                <el-button slot="reference" class="button" icon="el-icon-plus"></el-button>
+              </el-popover>
+              <el-popover placement="top-start" width="100" trigger="hover" v-else>
+                <span>Borrowed by {{ item.current_borrower}}</span>
+                <el-button slot="reference" class="button" icon="el-icon-warning"></el-button>
               </el-popover>
             </div>
           </div>
@@ -52,86 +48,14 @@
 <script>
 import { mapGetters } from "vuex";
 import { getBooks } from "@/api/book";
+import { borrowBook } from "@/api/book";
 
 export default {
   name: "Dashboard",
   data() {
     return {
       visible: false,
-      list: [
-        // {
-        //   id: 1,
-        //   name: "Site Reliability Engineering",
-        //   author: "Chris Jones",
-        //   publisher: "xxx",
-        //   donator: "Spark",
-        //   image:
-        //     "https://images-na.ssl-images-amazon.com/images/I/51XswOmuLqL._SX379_BO1,204,203,200_.jpg",
-        // },
-        // {
-        //   id: 2,
-        //   name: "Effective Java",
-        //   author: "Joshua Bloch",
-        //   publisher: "yyy",
-        //   donator: "Steven",
-        //   image:
-        //     "https://images-na.ssl-images-amazon.com/images/I/41JLgmt8MlL._SX402_BO1,204,203,200_.jpg",
-        // },
-        // {
-        //   id: 3,
-        //   name: "Think Python",
-        //   author: "Allen B Downey ",
-        //   publisher: "yyy",
-        //   donator: "Sun",
-        //   image:
-        //     "https://images-na.ssl-images-amazon.com/images/I/51-54ZrGSZL._SX379_BO1,204,203,200_.jpg",
-        // },
-        // {
-        //   id: 4,
-        //   name: "Design Patterns",
-        //   author: "Erich Gamma",
-        //   publisher: "yyy",
-        //   donator: "Coco",
-        //   image:
-        //     "https://images-na.ssl-images-amazon.com/images/I/41JLgmt8MlL._SX402_BO1,204,203,200_.jpg",
-        // },
-        // {
-        //   id: 5,
-        //   name: "Hacking",
-        //   author: "Jon Erickson",
-        //   publisher: "yyy",
-        //   donator: "Mei",
-        //   image:
-        //     "https://images-na.ssl-images-amazon.com/images/I/61VBaAS4IbL._SX383_BO1,204,203,200_.jpg",
-        // },
-        // {
-        //   id: 6,
-        //   name: "Introduction to Algorithms",
-        //   author: "Thomas H. Cormen",
-        //   publisher: "yyy",
-        //   donator: "Max",
-        //   image:
-        //     "https://images-na.ssl-images-amazon.com/images/I/41T0iBxY8FL._SX440_BO1,204,203,200_.jpg",
-        // },
-        // {
-        //   id: 7,
-        //   name: "Thinking in Systems",
-        //   author: "Donella H. Meadows",
-        //   publisher: "yyy",
-        //   donator: "Steven",
-        //   image:
-        //     "https://images-na.ssl-images-amazon.com/images/I/51frZKhRiIL._SX330_BO1,204,203,200_.jpg",
-        // },
-        // {
-        //   id: 8,
-        //   name: "Life 3.0",
-        //   author: "Max Tegmark",
-        //   publisher: "yyy",
-        //   donator: "Spark",
-        //   image:
-        //     "https://images-na.ssl-images-amazon.com/images/I/41mc05UgX8L._SX329_BO1,204,203,200_.jpg",
-        // },
-      ],
+      list: [],
       dialogFormVisible: false,
       search: "",
       selectBook: {
@@ -155,63 +79,29 @@ export default {
   },
   methods: {
     cancelBorrow(index) {
-      this.$set(this.list[index], 'visible', false);
+      this.$set(this.list[index], "visible", false)
     },
     confirmBorrow(index) {
-      this.$set(this.list[index], 'visible', false);
-      //do something 
+      this.$set(this.list[index], "visible", false)
+      let borrowOpt = {
+        id: this.list[index].id,
+        borrower: "spark",  // hard code user name
+      };
+
+      borrowBook(borrowOpt).then((response) => {
+        fetchData()
+        this.$router.push("/#/Dashboard");
+      });
     },
     fetchData() {
-      //   let response = [{
-      //     id: 1,
-      //     name: 'Vue.js',
-      //     author: 'abc',
-      //     press: 'xxx',
-      //     isbn: 'xxx',
-      //     contributor: 'Spark'
-      //   }]
-      //   for (let index = 0; index < 6; index++) {
-      //     response.push({
-      //       id: 1,
-      //       name: 'Vue.js',
-      //       author: 'abc',
-      //       press: 'xxx',
-      //       isbn: 'xxx',
-      //       contributor: 'Steven'
-      //     })
-      //   }
       getBooks().then((response) => {
         console.log(response);
         this.list = response;
-        //获取数据后添加个 visible flag
-        this.list.map(element => {
-          this.$set(element, 'visible', false)
+        this.list.map((element) => {
+          this.$set(element, "visible", false)
         });
       });
     },
-    // editBook(item) {
-    //   console.log(item);
-    //   this.dialogFormVisible = true;
-    //   this.selectBook = item;
-    // },
-    // saveBook() {
-    //   const payload = this.selectBook;
-    //   contributeBook(payload).then((response) => {
-    //     console.log(response.data.items);
-    //   });
-    // },
-    // contribute() {
-    //   const payload = {
-    //     name: "test",
-    //     author: "abc",
-    //     press: "xxx",
-    //     isbn: "xxx",
-    //     contributor: "",
-    //   };
-    //   contributeBook(payload).then((response) => {
-    //     console.log(response.data.items);
-    //   });
-    // },
   },
 };
 </script>

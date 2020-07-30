@@ -1,0 +1,1 @@
+mongoimport --host 40.112.174.85 --port 27017 --db sharedlibrary --collection book --drop --file testdata.json --jsonArray

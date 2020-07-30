@@ -25,3 +25,6 @@ portal/yarn-error.log
 
 cmd/library/library
 cmd/library/library.log
+
+library
+library.log

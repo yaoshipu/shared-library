@@ -14,7 +14,7 @@
         <el-input v-model="form.donator" />
       </el-form-item>
       <el-form-item label="Image URL">
-        <el-input v-model="form.image" />
+        <el-input v-model="form.image_url" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">Donate</el-button>
@@ -42,9 +42,8 @@ export default {
   methods: {
     onSubmit() {
       donateBook(this.form).then((response) => {
-        console.log(response);
+        this.$router.push('/#/Dashboard');
       });
-      this.$message("submit!");
     },
     onCancel() {
       this.$message({
