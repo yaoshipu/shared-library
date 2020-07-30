@@ -1,0 +1,6 @@
+/build/*
+/mock/*
+/node_modules/*
+/src/*
+/public/*
+/ptest/*

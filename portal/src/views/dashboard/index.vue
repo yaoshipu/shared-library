@@ -89,7 +89,7 @@ export default {
 
       borrowBook(borrowOpt).then((response) => {
         this.$message({
-          message: `${borrowOpt.name} 借阅成功`,
+          message: `Book borrowed`,
           type: 'success'
         });
         this.fetchData()

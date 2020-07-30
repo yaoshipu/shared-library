@@ -1,35 +1,71 @@
 apiVersion: v1
 kind: Service
 metadata:
-    name: library
+    name: library-backend
 spec:
     type: LoadBalancer
     ports:
     - port: 20987 
     selector:
-        app: library
+        app: library-backend
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: library
-  name: library
+    app: library-backend
+  name: library-backend
   namespace: default
 spec:
   selector:
     matchLabels:
-      app: library
+      app: library-backend
   template:
     metadata:
       labels:
-        app: library
+        app: library-backend
     spec:
       containers:
-      - image: shipu/library:1.0
+      - image: shipu/library-backend:1.0
         imagePullPolicy: Always
-        name: library
+        name: library-backend
         ports:
          - containerPort: 20987
         command: ["/library/library"]
+        #args: ["HOSTNAME", "KUBERNETES_PORT"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: library-portal
+spec:
+    type: LoadBalancer
+    ports:
+    - port: 80 
+    selector:
+        app: library-portal
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: library-portal
+  name: library-portal
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: library-portal
+  template:
+    metadata:
+      labels:
+        app: library-portal
+    spec:
+      containers:
+      - image: shipu/library-portal:1.0
+        imagePullPolicy: Always
+        name: library-portal
+        ports:
+         - containerPort: 80
+        # command: ["/library/library"]
         #args: ["HOSTNAME", "KUBERNETES_PORT"]

@@ -18,9 +18,9 @@
           <a>
             <img v-bind:src="item.image_url" />
             <small class="author-name">by {{ item.author }}</small>
-            <el-popover placement="top" trigger="click" width="250" v-model="item.visible">
-              <span>Do you want to return the book?</span>
-              <div style="text-align: right; margin: 0">
+            <el-popover placement="top" trigger="click" width="100" v-model="item.visible">
+              <span>Return the book?</span>
+              <div style="text-align: right; margin-top: 10px">
                 <el-button size="mini" type="text" @click="cancelReturn(index)">Cancel</el-button>
                 <el-button type="primary" size="mini" @click="confirmReturn(index)">Yes</el-button>
               </div>
@@ -71,7 +71,7 @@ export default {
       };
       returnBook(returnOpt).then((response) => {
         this.$message({
-          message: `${returnOpt.name} 归还成功`,
+          message: `Book returned`,
           type: 'success'
         });
         this.fetchData();
