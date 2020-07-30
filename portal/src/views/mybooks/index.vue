@@ -17,14 +17,14 @@
         <div class="card" v-for="(item,index) in mybooks.borrowed" :key="index">
           <a>
             <img v-bind:src="item.image_url" />
-            <small>by {{ item.author }}</small>
+            <small class="author-name">by {{ item.author }}</small>
             <el-popover placement="top" trigger="click" width="250" v-model="item.visible">
               <span>Do you want to return the book?</span>
               <div style="text-align: right; margin: 0">
                 <el-button size="mini" type="text" @click="cancelReturn(index)">Cancel</el-button>
                 <el-button type="primary" size="mini" @click="confirmReturn(index)">Yes</el-button>
               </div>
-              <el-button slot="reference" class="button" icon="el-icon-minus"></el-button>
+              <el-button slot="reference" size="mini" class="button" icon="el-icon-minus" circle></el-button>
             </el-popover>
           </a>
         </div>
@@ -66,15 +66,19 @@ export default {
       this.$set(this.mybooks.borrowed[index], "visible", false);
       let returnOpt = {
         id: this.mybooks.borrowed[index].id,
+        name:this.mybooks.borrowed[index].name,
         borrower: "spark", // hard code user name
       };
       returnBook(returnOpt).then((response) => {
-        this.$router.push("/#/Mybooks");
+        this.$message({
+          message: `${returnOpt.name} 归还成功`,
+          type: 'success'
+        });
+        this.fetchData();
       });
     },
     fetchData() {
       getMyBooks("spark").then((response) => {
-        console.log(response);
         this.mybooks = response;
       });
     },
@@ -129,6 +133,9 @@ div#app {
       small {
         font-size: 10px;
         padding: 4px;
+        &.author-name{
+          height: 30px;
+        }
       }
     }
   }

@@ -33,10 +33,9 @@
                 </div>
                 <el-button slot="reference" class="button" icon="el-icon-plus"></el-button>
               </el-popover>
-              <el-popover placement="top-start" width="100" trigger="hover" v-else>
-                <span>Borrowed by {{ item.current_borrower}}</span>
-                <el-button slot="reference" class="button" icon="el-icon-warning"></el-button>
-              </el-popover>
+              <el-tooltip v-else class="item" effect="dark" :content="`Borrowed by ${ item.current_borrower}`" placement="top-start">
+                <el-button class="button" icon="el-icon-warning"></el-button>
+              </el-tooltip>
             </div>
           </div>
         </el-card>
@@ -54,7 +53,6 @@ export default {
   name: "Dashboard",
   data() {
     return {
-      visible: false,
       list: [],
       dialogFormVisible: false,
       search: "",
@@ -85,17 +83,20 @@ export default {
       this.$set(this.list[index], "visible", false)
       let borrowOpt = {
         id: this.list[index].id,
+        name:this.list[index].name,
         borrower: "spark",  // hard code user name
       };
 
       borrowBook(borrowOpt).then((response) => {
-        fetchData()
-        this.$router.push("/#/Dashboard");
+        this.$message({
+          message: `${borrowOpt.name} 借阅成功`,
+          type: 'success'
+        });
+        this.fetchData()
       });
     },
     fetchData() {
       getBooks().then((response) => {
-        console.log(response);
         this.list = response;
         this.list.map((element) => {
           this.$set(element, "visible", false)
